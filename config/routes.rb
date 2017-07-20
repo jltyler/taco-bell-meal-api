@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show]
   resources :menu_items, only: %i[index show]
   resources :meals, except: %i[new edit]
+  resources :meal_items, except: %i[new edit]
 end
