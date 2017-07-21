@@ -9,8 +9,7 @@ curl "${API}${URL_PATH}" \
   --header "Authorization: Token token=$TOKEN" \
   --data '{
     "meal": {
-      "name": "'"${TEXT}"'",
-      "user_id": "'"${USER}"'"
+      "name": "'"${NAME}"'"
     }
   }'
 
