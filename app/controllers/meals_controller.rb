@@ -38,6 +38,30 @@ class MealsController < ApplicationController
     @meal.destroy
   end
 
+  def get_items
+    # get_items_params = params.require(:meal).permit(:id)
+    @items = Meal.find(params[:id]).menu_items
+    render json: @items
+  end
+
+  def add_item
+    add_item_params = params.require(:meal).permit(:menu_item_id)
+    # p add_item_params
+    @new_item = MealItem.new(meal_id: params[:id], menu_item_id: add_item_params[:menu_item_id])
+    if @new_item.save
+      head :created
+    else
+      render @new_item.errors, status: :unprocessable_entity
+    end
+  end
+
+  def delete_item
+    delete_item_params = params.require(:meal).permit(:menu_item_id)
+    @dead_item = MealItem.find_by(meal_id: params[:id], menu_item_id: delete_item_params[:menu_item_id])
+    @dead_item.destroy
+    head :no_content
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_meal
