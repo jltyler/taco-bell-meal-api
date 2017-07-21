@@ -38,28 +38,39 @@ class MealsController < ProtectedController
     @meal.destroy
   end
 
+  # GET /meal-items/1
   def get_items
-    # get_items_params = params.require(:meal).permit(:id)
-    @items = Meal.find(params[:id]).menu_items
+    @items = current_user.meals.find(params[:id]).menu_items
     render json: @items
   end
 
+  # POST /add-item/1
   def add_item
-    add_item_params = params.require(:meal).permit(:menu_item_id)
-    # p add_item_params
-    @new_item = MealItem.new(meal_id: params[:id], menu_item_id: add_item_params[:menu_item_id])
-    if @new_item.save
-      head :created
-    else
-      render @new_item.errors, status: :unprocessable_entity
+    @meal = current_user.meals.find(params[:id])
+    if @meal
+      add_item_params = params.require(:meal).permit(:menu_item_id)
+      @new_item = MealItem.new(meal_id: params[:id], menu_item_id: add_item_params[:menu_item_id])
+      if @new_item.save
+        head :created
+      else
+        render @new_item.errors, status: :unprocessable_entity
+      end
     end
   end
 
+  # DELETE /delete-item/1
   def delete_item
-    delete_item_params = params.require(:meal).permit(:menu_item_id)
-    @dead_item = MealItem.find_by(meal_id: params[:id], menu_item_id: delete_item_params[:menu_item_id])
-    @dead_item.destroy
-    head :no_content
+    @meal = current_user.meals.find(params[:id])
+    if @meal
+      delete_item_params = params.require(:meal).permit(:menu_item_id)
+      @dead_item = MealItem.find_by(meal_id: params[:id], menu_item_id: delete_item_params[:menu_item_id])
+      if @dead_item
+        @dead_item.destroy
+        head :no_content
+      else
+        head :not_found
+      end
+    end
   end
 
   private
