@@ -51,7 +51,9 @@ class MealsController < ProtectedController
       add_item_params = params.require(:meal).permit(:menu_item_id)
       @new_item = MealItem.new(meal_id: params[:id], menu_item_id: add_item_params[:menu_item_id])
       if @new_item.save
-        head :created
+        @menu_item = MenuItem.find(add_item_params[:menu_item_id])
+        render json: @menu_item, status: :created
+        # head :created
       else
         render @new_item.errors, status: :unprocessable_entity
       end
