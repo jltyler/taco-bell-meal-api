@@ -5,6 +5,7 @@ An API for saving your Taco Bell® items into lists so you can maximize the effi
 ## Endpoints
 ### Authorization
 Verb | URI Pattern | Action
+--- | --- | ---
 POST | `/sign-up` | `users#signup`
 POST | `/sign-in` | `users#signin`
 DELETE | `/sign-out/:id` | `users#signout`
@@ -13,10 +14,14 @@ GET | `/users` | `users#index`
 GET | `/users/:id` | `users#show`
 
 ### Menu
+Verb | URI Pattern | Action
+--- | --- | ---
 GET | `/menu-items` | `menu_items#index`
 GET | `/menu-items/:id` | `menu_items#show`
 
 ### Meals (requires token)
+Verb | URI Pattern | Action
+--- | --- | ---
 GET | `/meals` | `meals#index`
 GET | `/meals/:id` | `meals#show`
 POST | `/meals/:id` | `meals#create`
